@@ -26,10 +26,7 @@
     </head>
 
     <body style="margin: 0; overflow: hidden;">
-        <!-- Botón para desbloquear el audio del video -->
-        <button id="playButton" onclick="enableVideo()" style="position: absolute; z-index: 9999;">
-            Habilitar Audio
-        </button>
+        
         <a-scene
             vr-mode-ui="enabled: false"
             loading-screen="enabled: false;"
@@ -69,23 +66,14 @@
                 <a-video
                     src="#vid"
                     scale="2 2 2"
-                    position="0 0.1 0"
+                    position="0 1 0"
                     rotation="-90 0 0"
                     class="clickable"
-                    gesture-handler
                 ></a-video>
             </a-marker>
 
             <a-entity camera></a-entity>
         </a-scene>
-        <script>
-            // Habilitar reproducción del video con audio
-            function enableVideo() {
-                const video = document.querySelector("#vid");
-                video.muted = false; // Desactiva el silencio
-                video.play();
-                document.getElementById("playButton").style.display = "none"; // Oculta el botón
-            }
-        </script>
+       
     </body>
 </html>
