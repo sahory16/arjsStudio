@@ -1,79 +1,85 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-    <head>
-        <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-        <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-        <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
-        <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
-        <script>
-            AFRAME.registerComponent('videohandler', {
-                init: function () {
-                    var marker = this.el;
-                    this.vid = document.querySelector("#vid");
+  <head>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <script>
+      AFRAME.registerComponent("videohandler", {
+        init: function () {
+          const marker = this.el;
+          const videoId = marker.getAttribute("data-video-id");
+          const video = document.querySelector(`#${videoId}`);
 
-                    marker.addEventListener('markerFound', function () {
-                        this.toggle = true;
-                        this.vid.play();
-                    }.bind(this));
+          marker.addEventListener("markerFound", function () {
+            if (video) video.play();
+          });
 
-                    marker.addEventListener('markerLost', function () {
-                        this.toggle = false;
-                        this.vid.pause();
-                    }.bind(this));
-                },
-            });
-        </script>
-    </head>
+          marker.addEventListener("markerLost", function () {
+            if (video) video.pause();
+          });
+        },
+      });
+    </script>
+  </head>
 
-    <body style="margin: 0; overflow: hidden;">
-        
-        <a-scene
-            vr-mode-ui="enabled: false"
-            loading-screen="enabled: false;"
-            arjs='sourceType: webcam; debugUIEnabled: false;'
-            id="scene"
-            embedded
-            gesture-detector
-        >
-            <a-assets>
-                <video
-                    id="vid"
-                    src="assets/asset.mp4"
-                    preload="auto"
-                    response-type="arraybuffer"
-                    loop
-                    crossorigin
-                    webkit-playsinline
-                    autoplay
-                    playsinline
-                ></video>
-            </a-assets>
+  <body style="margin: 0; overflow: hidden;">
+    <a-scene
+        vr-mode-ui="enabled: false"
+        loading-screen="enabled: false;"
+        arjs='sourceType: webcam; debugUIEnabled: false;'
+        id="scene"
+        embedded
 
-            <a-marker
-                type="pattern"
-                preset="custom"
-                url="assets/marker.patt"
-                videohandler
-                smooth="true"
-                smoothCount="10"
-                smoothTolerance="0.01"
-                smoothThreshold="5"
-                raycaster="objects: .clickable"
-                emitevents="true"
-                cursor="fuse: false; rayOrigin: mouse;"
-                id="markerA"
-            >
-                <a-video
-                    src="#vid"
-                    scale="2 2 2"
-                    position="0 0.5 0"
-                    rotation="-90 0 0"
-                    class="clickable"
-                ></a-video>
-            </a-marker>
+    >
+      <!-- Carga de recursos -->
+      <a-assets>
+        <video id="video1" src="assets/asset.mp4" preload="auto" loop crossorigin="anonymous"></video>
+        <video id="video2" src="assets/asset2.mp4" preload="auto" loop crossorigin="anonymous"></video>
+      </a-assets>
 
-            <a-entity camera></a-entity>
-        </a-scene>
-       
-    </body>
+      <!-- Marcador 1 -->
+      <a-marker
+        type="pattern"
+        preset="custom"
+        url="assets/marker1.patt"
+        videohandler
+        smooth="true"
+        smoothCount="10"
+        smoothTolerance="0.01"
+        smoothThreshold="5"
+        emitevents="true"
+        data-video-id="asset"
+      >
+        <a-video
+          src="#asset"
+          scale="1 1 1"
+          position="0 0.5 0"
+          rotation="-90 0 0"
+        ></a-video>
+      </a-marker>
+
+      <!-- Marcador 2 -->
+      <a-marker
+      type="pattern"
+      preset="custom"
+      url="assets/marker2.patt"
+      videohandler
+      smooth="true"
+      smoothCount="10"
+      smoothTolerance="0.01"
+      smoothThreshold="5"
+      emitevents="true"
+      data-video-id="asset2"
+      >
+        <a-video
+          src="#asset2"
+          scale="1 1 1"
+          position="0 0.5 0"
+          rotation="-90 0 0"
+        ></a-video>
+      </a-marker>
+
+      <a-entity camera></a-entity>
+    </a-scene>
+  </body>
 </html>
